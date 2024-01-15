@@ -8,7 +8,7 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<AppLayout />}>
-          <Route path="form" element={<FormWrapper />} />
+          <Route index element={<FormWrapper />} />
           <Route path="list" element={<UserList />} />
           <Route
             path="history/:pasport"
