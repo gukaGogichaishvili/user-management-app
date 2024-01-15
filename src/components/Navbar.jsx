@@ -10,7 +10,7 @@ const Navbar = () => {
   const currentPath = location.pathname;
 
   const links = [
-    { label: "Form", to: "/form", icon: <FaWpforms /> },
+    { label: "Form", to: "/", icon: <FaWpforms /> },
     { label: "List", to: "/list", icon: <MdFormatListNumbered /> },
   ];
 
