@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import ViewHistoryBtn from "./ViewHistoryBtn";
 import { Table } from "@radix-ui/themes";
 import { Button } from "antd";

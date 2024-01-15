@@ -123,10 +123,11 @@ const UserForm = ({ initialValues, addOrUpdate }) => {
           value={formData.pasport}
           onChange={handleChange}
           autoComplite="off"
+          disabled={initialValues.name !== ''} 
         />
       </Form.Item>
       <Form.Item label="Date of Birth" help={formErrors.dateOfBirth}>
-        <DatePicker onChange={handleDateChange}  value={formData.dateOfBirth ? moment(formData.dateOfBirth) : null}  />
+        <DatePicker onChange={handleDateChange}     value={formData.dateOfBirth ? moment(formData.dateOfBirth, "YYYY-MM-DD") : null}   />
       </Form.Item>
       <CarInputs
         onCarSelection={handleCarSelection}
