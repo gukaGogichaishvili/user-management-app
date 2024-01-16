@@ -16,7 +16,6 @@ const CarInputs = ({ onCarSelection, initialBrand, initialModel }) => {
 
   const handleModelChange = (value) => {
     onCarSelection(selectedBrand, value);
-
   };
 
   return (

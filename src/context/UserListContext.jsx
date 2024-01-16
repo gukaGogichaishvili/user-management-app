@@ -12,9 +12,7 @@ export const UserListProvider = ({ children }) => {
 
   const addUser = (newUser) => {
     setUserList((prevUserList) => {
-      const updatedUserList = Array.isArray(prevUserList)
-        ? prevUserList
-        : JSON.parse(prevUserList);
+      const updatedUserList = [...prevUserList]; 
       const existingUserIndex = updatedUserList.findIndex(
         (user) => user.pasport === newUser.pasport,
       );
@@ -29,18 +27,15 @@ export const UserListProvider = ({ children }) => {
 
   const removeUser = (userId) => {
   setUpdateHistory((prevHistory) => {
-    const updatedUserHistory = Array.isArray(prevHistory)
-      ? prevHistory
-      : JSON.parse(prevHistory);
+    const updatedUserHistory = prevHistory
+  
     return updatedUserHistory.filter(
       (historyEntry) => historyEntry.userId !== userId,
     );
   });
 
   setUserList((prevUserList) => {
-    const updatedUserList = Array.isArray(prevUserList)
-      ? prevUserList
-      : JSON.parse(prevUserList);
+    const updatedUserList =  prevUserList
     return updatedUserList.filter((user) => user.pasport !== userId);
   });
 }
@@ -57,9 +52,7 @@ export const UserListProvider = ({ children }) => {
 
   const updateUser = (updatedUser) => {
     setUserList((prevUserList) => {
-      const updatedUserList = Array.isArray(prevUserList)
-        ? prevUserList
-        : JSON.parse(prevUserList);
+      const updatedUserList = prevUserList
       const existingUserIndex = updatedUserList.findIndex(
         (user) => user.pasport === updatedUser.pasport,
       );

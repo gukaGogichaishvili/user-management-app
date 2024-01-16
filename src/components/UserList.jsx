@@ -6,7 +6,7 @@ import SingleUserRow from "./SingleUserRow";
 const UserList = () => {
   const { userList } = useUserListContext();
   const [searchQuery, setSearchQuery] = useState("");
-  const [sortKey, setSortKey] = useState(null);
+  const [sortKey, setSortKey] = useState([]);
   const [isAscending, setIsAscending] = useState(true);
   const [currentPage, setCurrentPage] = useState(0);
   const limit = 10;
@@ -25,25 +25,21 @@ const UserList = () => {
     }
     setCurrentPage(0);
   };
-
-  const filteredUsers = useMemo(() => {
-    return userList.filter((user) =>
-      user.name.toLowerCase().includes(searchQuery) ||
-      user.username.toLowerCase().includes(searchQuery) ||
-      user.carBrand.toLowerCase().includes(searchQuery) ||
-      user.carModel.toLowerCase().includes(searchQuery)
-    );
-  }, [userList, searchQuery]);
-
-  const sortedUsers = useMemo(() => {
-    if (!sortKey) return filteredUsers;
-    return [...filteredUsers].sort((a, b) => {
+  const filteredUsers = userList.filter(user =>
+    user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    user.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    user.carBrand.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    user.carModel.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+  
+  let sortedUsers = filteredUsers;
+  if (sortKey) {
+    sortedUsers = [...filteredUsers].sort((a, b) => {
       if (a[sortKey] < b[sortKey]) return isAscending ? -1 : 1;
       if (a[sortKey] > b[sortKey]) return isAscending ? 1 : -1;
       return 0;
     });
-  }, [filteredUsers, sortKey, isAscending]);
-
+  }
   const totalPages = Math.ceil(sortedUsers.length / limit);
   const startIndex = currentPage * limit;
   const endIndex = startIndex + limit;

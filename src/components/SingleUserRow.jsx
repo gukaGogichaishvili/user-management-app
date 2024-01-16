@@ -14,22 +14,14 @@ const SingleUserRow = ({
   carModel,
   carplate,
 }) => {
-  const [initialValue, setInitialValue] = useState({
-    name: "",
-    username: "",
-    pasport: "",
-    dateOfBirth: null,
-    carBrand: null,
-    carModel: null,
-    carplate: "",
-  });
+  
+  
   const { removeUser, updateUser, userList } = useUserListContext();
   const [editingUserId, setEditingUserId] = useState(null);
 
   const openUpdateForm = (userId) => {
     const userFromTable = userList.find((user) => user.pasport === userId);
     if (userFromTable) {
-      setInitialValue(userFromTable);
       setEditingUserId(userId);
     }
   };
@@ -70,7 +62,15 @@ const SingleUserRow = ({
       {editingUserId === pasport && (
         <Table.Row>
           <Table.Cell colspan="100%">
-            <UserForm initialValues={initialValue} addOrUpdate={updateUser} />
+            <UserForm initialValues={{
+    name,
+    username,
+    pasport,
+    dateOfBirth,
+    carBrand,
+    carModel,
+    carplate
+  }} addOrUpdate={updateUser} />
             <Button
               onClick={() => {
                 setEditingUserId(null);

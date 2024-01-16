@@ -58,7 +58,7 @@ const UserForm = ({ initialValues, addOrUpdate }) => {
     }));
   };
 
-  const handleCarSelection = useCallback((carBrand, carModel) => {
+  const handleCarSelection = (carBrand, carModel) => {
     setFormData((prev) => ({
       ...prev,
       carBrand: carBrand,
@@ -69,7 +69,7 @@ const UserForm = ({ initialValues, addOrUpdate }) => {
       carBrand: carBrand ? "" : "Please select a car brand.",
       carModel: carModel ? "" : "Please select a car model.",
     }));
-  }, []);
+  };
 
   const handleSubmit = () => {
     const isFormValid =
