@@ -1,13 +1,30 @@
 import React, { useCallback, useState } from "react";
-import { Button, DatePicker, Form, Input } from "antd";
-import CarInputs from "./CarInputs";
+import { Button, DatePicker, Form, Input, Select } from "antd";
 import moment from 'moment';
 
+import carData from "../../carData.json";
+
+const { Option } = Select;
 
 const UserForm = ({ initialValues, addOrUpdate }) => {
   const { name, username, pasport, dateOfBirth, carBrand, carModel, carplate } =
     initialValues;
 
+
+    const [selectedBrand, setSelectedBrand] = useState(initialValues.carBrand);
+    const [models, setModels] = useState([]);
+  
+    const handleBrandChange = (value) => {
+      setSelectedBrand(value);
+      setModels(carData[value]);
+      handleCarSelection(value, null);
+    };
+  
+    const handleModelChange = (value) => {
+      handleCarSelection(selectedBrand, value);
+  
+    };
+  
   const [formData, setFormData] = useState({
     name,
     username,
@@ -58,7 +75,7 @@ const UserForm = ({ initialValues, addOrUpdate }) => {
     }));
   };
 
-  const handleCarSelection = (carBrand, carModel) => {
+  const handleCarSelection = useCallback((carBrand, carModel) => {
     setFormData((prev) => ({
       ...prev,
       carBrand: carBrand,
@@ -69,7 +86,7 @@ const UserForm = ({ initialValues, addOrUpdate }) => {
       carBrand: carBrand ? "" : "Please select a car brand.",
       carModel: carModel ? "" : "Please select a car model.",
     }));
-  };
+  }, []);
 
   const handleSubmit = () => {
     const isFormValid =
@@ -129,11 +146,44 @@ const UserForm = ({ initialValues, addOrUpdate }) => {
       <Form.Item label="Date of Birth" help={formErrors.dateOfBirth}>
         <DatePicker onChange={handleDateChange}     value={formData.dateOfBirth ? moment(formData.dateOfBirth, "YYYY-MM-DD") : null}   />
       </Form.Item>
-      <CarInputs
-        onCarSelection={handleCarSelection}
-        initialBrand={formData.carBrand}
-        initialModel={formData.carModel}
-      />u
+
+      <Form.Item label="Brand">
+        <Select
+          value={formData.carBrand}
+          showSearch
+          placeholder="Select a brand"
+          onChange={handleBrandChange}
+          filterOption={(input, option) =>
+            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          }
+        >
+          {Object.keys(carData).map((brand) => (
+            <Option key={brand} value={brand}>
+              {brand}
+            </Option>
+          ))}
+        </Select>
+      </Form.Item>
+
+      {selectedBrand && (
+        <Form.Item label="Model">
+          <Select
+            value={formData.carModel}
+            showSearch
+            placeholder="Select a model"
+            onChange={handleModelChange}
+            filterOption={(input, option) =>
+              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            }
+          >
+            {models.map((model) => (
+              <Option key={model} value={model}>
+                {model}
+              </Option>
+            ))}
+          </Select>
+        </Form.Item>
+      )}
       <Form.Item label="Plate Number" help={formErrors.carplate}>
         <Input
           name="carplate"
@@ -154,4 +204,4 @@ const UserForm = ({ initialValues, addOrUpdate }) => {
   );
 };
 
-export default React.memo(UserForm);
+export default UserForm;
