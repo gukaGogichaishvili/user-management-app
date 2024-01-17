@@ -4,6 +4,8 @@ import { useUserListContext } from "../context/UserListContext";
 import SingleUserRow from "./SingleUserRow";
 
 const UserList = () => {
+
+  //სტეიტი და კონტექსტი
   const { userList } = useUserListContext();
   const [searchQuery, setSearchQuery] = useState("");
   const [sortKey, setSortKey] = useState([]);
@@ -11,6 +13,7 @@ const UserList = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const limit = 10;
 
+  //სერჩის და სორტირების ლოგიკა
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value.toLowerCase());
     setCurrentPage(0);
@@ -25,6 +28,7 @@ const UserList = () => {
     }
     setCurrentPage(0);
   };
+  
   const filteredUsers = userList.filter(user =>
     user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     user.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -40,6 +44,8 @@ const UserList = () => {
       return 0;
     });
   }
+
+  //pagination
   const totalPages = Math.ceil(sortedUsers.length / limit);
   const startIndex = currentPage * limit;
   const endIndex = startIndex + limit;

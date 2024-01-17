@@ -1,6 +1,6 @@
 import React from "react";
 import { useUserListContext } from "../context/UserListContext";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button } from "antd";
 import { Table } from "@radix-ui/themes";
 import { useRedirectContext } from "../context/RedirectContext";

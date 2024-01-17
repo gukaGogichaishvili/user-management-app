@@ -1,15 +1,14 @@
-import React, { createContext, useCallback, useContext, useState } from "react";
+import React, { createContext, useContext, } from "react";
 import useLocalStorage from "../hooks/useLocalStorage";
 
 const UserListContext = createContext();
 
 export const UserListProvider = ({ children }) => {
   const [userList, setUserList] = useLocalStorage("userList", []);
-  const [updateHistory, setUpdateHistory] = useLocalStorage(
-    "updateHistory",
-    [],
-  );
+  const [updateHistory, setUpdateHistory] = useLocalStorage( "updateHistory", []);
 
+
+//დამატება
   const addUser = (newUser) => {
     setUserList((prevUserList) => {
       const updatedUserList = [...prevUserList]; 
@@ -20,11 +19,13 @@ export const UserListProvider = ({ children }) => {
         console.log("User with this ID already exists");
         return updatedUserList;
       } else {
-        return [...updatedUserList, newUser];
+        return [newUser, ...updatedUserList];
       }
     });
-  };
+  };  
 
+
+// წაშლა
   const removeUser = (userId) => {
   setUpdateHistory((prevHistory) => {
     const updatedUserHistory = prevHistory
@@ -42,7 +43,7 @@ export const UserListProvider = ({ children }) => {
 
 
   
-
+//აფდეითი
   const logUpdate = (action, userId, prevData, newData) => {
     setUpdateHistory((currentHistory) => [
       ...currentHistory,
@@ -69,6 +70,8 @@ export const UserListProvider = ({ children }) => {
       return updatedUserList; 
     });
   };
+
+
 
   return (
     <UserListContext.Provider

@@ -16,8 +16,10 @@ const SingleUserRow = ({
 }) => {
   
   
-  const { removeUser, updateUser, userList } = useUserListContext();
+  const { removeUser, userList } = useUserListContext();
   const [editingUserId, setEditingUserId] = useState(null);
+
+  const addingUser = false;
 
   const openUpdateForm = (userId) => {
     const userFromTable = userList.find((user) => user.pasport === userId);
@@ -70,7 +72,7 @@ const SingleUserRow = ({
     carBrand,
     carModel,
     carplate
-  }} addOrUpdate={updateUser} />
+  }} addingUser={addingUser} />
             <Button
               onClick={() => {
                 setEditingUserId(null);

@@ -3,28 +3,33 @@ import { Button, DatePicker, Form, Input, Select } from "antd";
 import moment from 'moment';
 
 import carData from "../../carData.json";
+import { useUserListContext } from "../context/UserListContext";
 
 const { Option } = Select;
 
-const UserForm = ({ initialValues, addOrUpdate }) => {
+const UserForm = ({ initialValues, addingUser }) => {
+
+  //მონაცემების პროფსად მიღება, მონაცემები მიდის ინფუთების პლეისჰოლდერში
   const { name, username, pasport, dateOfBirth, carBrand, carModel, carplate } =
     initialValues;
 
+    //კონტექსტის მეთოდები
+    const { addUser, updateUser } = useUserListContext();
 
+    //ბრენიდს არჩევის შემდეგ მოდელების გაფილტვრის და ჩამოშლის ლოგიკა
     const [selectedBrand, setSelectedBrand] = useState(initialValues.carBrand);
     const [models, setModels] = useState([]);
-  
     const handleBrandChange = (value) => {
       setSelectedBrand(value);
       setModels(carData[value]);
       handleCarSelection(value, null);
     };
-  
     const handleModelChange = (value) => {
       handleCarSelection(selectedBrand, value);
-  
     };
   
+
+    // ერორების და ინფუთ ფილდების სტეიტი
   const [formData, setFormData] = useState({
     name,
     username,
@@ -43,6 +48,8 @@ const UserForm = ({ initialValues, addOrUpdate }) => {
     carModel: "",
   });
 
+
+  // ვალიდაცია
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -88,6 +95,8 @@ const UserForm = ({ initialValues, addOrUpdate }) => {
     }));
   }, []);
 
+
+// ახალი პიროვნების შენახვა ან დააფდეითება
   const handleSubmit = () => {
     const isFormValid =
       Object.values(formErrors).every((err) => err === "") &&
@@ -100,7 +109,8 @@ const UserForm = ({ initialValues, addOrUpdate }) => {
       formData.carplate;
 
     if (isFormValid) {
-      addOrUpdate(formData);
+      addingUser ?  addUser(formData) : updateUser(formData);
+      
       console.log(formData);
       if(initialValues.pasport === ''){
         setFormData(initialValues);
@@ -110,6 +120,7 @@ const UserForm = ({ initialValues, addOrUpdate }) => {
     }
   };
 
+  //ფორმა
   return (
     <Form
       labelCol={{ span: 4 }}
@@ -144,7 +155,7 @@ const UserForm = ({ initialValues, addOrUpdate }) => {
         />
       </Form.Item>
       <Form.Item label="Date of Birth" help={formErrors.dateOfBirth}>
-        <DatePicker onChange={handleDateChange}     value={formData.dateOfBirth ? moment(formData.dateOfBirth, "YYYY-MM-DD") : null}   />
+        <DatePicker onChange={handleDateChange}     value={formData.dateOfBirth ? moment(formData.dateOfBirth, "YYYY-MM-DD") : null}/>
       </Form.Item>
 
       <Form.Item label="Brand">

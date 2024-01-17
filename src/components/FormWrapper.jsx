@@ -3,18 +3,20 @@ import UserForm from "./UserForm";
 import { useUserListContext } from "../context/UserListContext";
 
 const FormWrapper = () => {
-  const { addUser } = useUserListContext();
+ 
+
+  const addingUser = true;
 
   const initialValues = {
     name: "",
     username: "",
     pasport: "",
-    dateOfBirth: null,
+    dateOfBirth: '',
     carBrand: null,
     carModel: null,
     carplate: "",
   };
-  return <UserForm initialValues={initialValues} addOrUpdate={addUser} />;
+  return <UserForm initialValues={initialValues} addingUser={addingUser} />;
 };
 
 export default FormWrapper;
